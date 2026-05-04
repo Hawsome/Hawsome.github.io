@@ -1,31 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Nuke - The Ultimate WordPress Reset Tool</title>
+    <title>Site Nuke - Enterprise WordPress Reset Tool</title>
     <style>
+        /* Base Variables & Reset */
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #171717;
+            --primary-red: #d63638;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0f0f0f;
-            color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--primary-red);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff4d4f;
+        }
+
+        /* Navbar */
+        nav {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #262626;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--primary-red);
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .badge {
+            background: rgba(214, 54, 56, 0.1);
+            color: var(--primary-red);
+            padding: 6px 14px;
+            border: 1px solid rgba(214, 54, 56, 0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-red);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn:hover {
+            background: #b02a2c;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #333;
+            margin-left: 15px;
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: #1a1a1a;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #262626;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-red);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Documentation / FAQ */
+        .docs {
+            background: #111;
+            padding: 80px 5%;
+            border-top: 1px solid #262626;
+        }
+
+        .docs-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #262626;
+            padding: 25px 0;
+        }
+
+        .faq-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-red);
+        }
+
+        .faq-item p {
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid #262626;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Floating Scroll to Top Button */
+        #scrollTopBtn {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--primary-red);
+            color: white;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, transform 0.3s;
+            display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
+            opacity: 0;
+            pointer-events: none;
         }
-        h1 { color: #d63638; font-size: 3rem; margin-bottom: 10px; }
-        p { color: #a7aaad; font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
-        .badge { background: #2271b1; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.9rem; font-weight: bold; margin-bottom: 20px; display: inline-block;}
+
+        #scrollTopBtn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #scrollTopBtn:hover {
+            background-color: #b02a2c;
+            transform: translateY(-3px);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            .btn {
+                display: block;
+                margin: 0 auto 15px auto;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .btn-outline {
+                margin-left: auto;
+            }
+
+            .nav-links {
+                display: none;
+                /* Hide nav links on very small screens for cleaner UI */
+            }
+
+            #scrollTopBtn {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <div class="badge">Currently In Review @ WordPress.org</div>
-    <h1>Site Nuke</h1>
-    <p>An enterprise-grade, asynchronous reset tool for WordPress developers. Safely obliterate databases, purge filesystems, and restore Day-1 defaults without server timeouts.</p>
-    <p style="margin-top: 30px; font-size: 0.9rem;"><em>Full Documentation and Pro Features coming soon.</em></p>
+
+    <nav>
+        <div class="logo">Site<span>Nuke</span></div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#docs">Docs & FAQ</a>
+            <a href="https://github.com/Hawsome" target="_blank">GitHub</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="badge">Version 1.0.0 — Awaiting WP.org Review</div>
+        <h1>The Enterprise-Grade<br>Factory Reset.</h1>
+        <p>Safely obliterate databases, purge deeply nested filesystems, and restore Day-1 defaults. Engineered for
+            developers, secured by AppSec architecture, and immune to server timeouts.</p>
+        <a href="#docs" class="btn">Read the Documentation</a>
+        <a href="https://github.com/Hawsome" target="_blank" class="btn btn-outline">Follow the Developer</a>
+    </header>
+
+    <section id="features" class="features">
+        <h2 class="section-title">Engineered for Reliability</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Zero Timeouts</h3>
+                <p>Deleting 50,000 media files crashes standard reset plugins. Site Nuke uses an asynchronous, chunked
+                    AJAX pipeline to bypass PHP execution limits, ensuring 100% reliability on any host.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔒</div>
+                <h3>Sudo-Mode Security</h3>
+                <p>Immune to XSS and clickjacking. Destructive actions are isolated in a sterile vacuum, requiring a
+                    dynamic string match and password re-authentication before a single table is dropped.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧹</div>
+                <h3>The Deep Cleanse</h3>
+                <p>We don't just truncate core tables. Site Nuke actively hunts down and drops orphaned custom tables
+                    (like WooCommerce leftovers), leaving your database in a true blank-slate state.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" class="docs">
+        <div class="docs-container">
+            <h2 class="section-title">Documentation & FAQ</h2>
+
+            <div class="faq-item">
+                <h4>What does the Pre-Flight Analyzer do?</h4>
+                <p>Before any destruction occurs, Site Nuke runs a non-destructive background scan. It counts your
+                    database tables, extensions, and recursively calculates the exact byte-size of your uploads folder
+                    so you know exactly what is on the chopping block.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>Will Site Nuke log me out?</h4>
+                <p>No. The Database Engine is specifically programmed to preserve your active Administrator session,
+                    your user metadata, and your core `wp_options` site URLs. Everything else is purged.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>Does it delete my active theme or plugins?</h4>
+                <p>Site Nuke preserves itself and switches your site to the latest default WordPress theme (e.g., Twenty
+                    Twenty-Four). It then recursively deletes all other inactive themes and plugins from your server to
+                    free up disk space.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>What is the Live Mission Control terminal?</h4>
+                <p>Because completely purging a large website can take a few minutes, we provide a live terminal. It
+                    streams a real-time log of chunks cleared and tables dropped so you never have to wonder if the
+                    process froze.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Site Nuke. Engineered by Awesome Akinfenwa. Not affiliated with WordPress or Automattic.</p>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top">↑</button>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const target = document.querySelector(this.getAttribute('href'));
+                if (!target) return;
+
+                const targetPosition = target.offsetTop;
+                const start = window.scrollY;
+                const distance = targetPosition - start;
+                const duration = 600;
+                let startTime = null;
+
+                function scrollStep(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+
+                    const ease = 1 - Math.pow(1 - progress / duration, 3);
+
+                    window.scrollTo(0, start + distance * ease);
+
+                    if (progress < duration) {
+                        requestAnimationFrame(scrollStep);
+                    }
+                }
+
+                requestAnimationFrame(scrollStep);
+            });
+        });
+
+        // Scroll to Top Logic
+        const topBtn = document.getElementById("scrollTopBtn");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                topBtn.classList.add("visible");
+            } else {
+                topBtn.classList.remove("visible");
+            }
+        });
+
+        topBtn.addEventListener("click", () => {
+            const start = window.scrollY;
+            const duration = 600;
+            let startTime = null;
+
+            function scrollStep(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const ease = 1 - Math.pow(1 - progress / duration, 3);
+
+                window.scrollTo(0, start * (1 - ease));
+
+                if (progress < duration) {
+                    requestAnimationFrame(scrollStep);
+                }
+            }
+
+            requestAnimationFrame(scrollStep);
+        });
+    </script>
 </body>
+
 </html>
